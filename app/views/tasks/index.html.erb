@@ -1,8 +1,43 @@
 
-<% @tasks.each do |task| %>
-  <%= task.description %><form action="/tasks/<% task.id %>" method="post">
-  <input name="_method" type="hidden" value="patch">
-  <input name="task[done]" type="hidden" value="true">
-  <button>Mark done</button>
-  </form><br>
+<h1>Tasks</h1>
+
+<ul>
+  <% @tasks.each do |task| %>
+  <% if task.done %>
+    <li class="done"><a href="/tasks/<%= task.id %>">
+    <%= task.description %></a>
+      <form action="/tasks/<%= task.id %>" method="post">
+      <input name="_method" type="hidden" value="patch">
+      <input name="task[done]" type="hidden" value="false">
+      <button>Unmark</button>
+      </form></li>
+  <% else %>
+  <li><a href="/tasks/<%= task.id %>">
+    <%= task.description %></a>
+    <form action="/tasks/<%= task.id %>" method="post">
+    <input name="_method" type="hidden" value="patch">
+    <input name="task[done]" type="hidden" value="true">
+    <button>Mark Done</button>
+    </form></li>
+    <% end %>
+  <% end %>
+</ul>
+
+<h2>New task</h2>
+
+<% if @task.errors.any? %>
+<h3>Please fix these errors:</h3>
+<ul>
+  <% @task.errors.full_messages.each do |message| %>
+  <li><%= message %></li>
+  <% end %>
+</ul>
 <% end %>
+
+<form action="/tasks" method="post">
+  <label for="task_name">Name</label>
+  <input id="task_name" name="task[description]" type="text" value="<%= @task.description %>">
+  <label for="task_due_date">Due</label>
+  <input id="task_due_date" name="task[due_date]" type="date" value="<%= @task.due_date %>">
+  <button>Create task</button>
+  </form>

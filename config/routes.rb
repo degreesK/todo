@@ -1,10 +1,16 @@
 Rails.application.routes.draw do
   match('tasks', {:via => :get, :to => 'tasks#index'})
+  match('tasks', {:via => :post, :to => 'tasks#create'})
   match('tasks/new', {:via => :get, :to => 'tasks#new'})
-  match('tasks/:id/edit', {:via => :get, :to => 'tasks#edit'})
+  match('tasks/:id', {:via => [:patch, :put], :to => 'tasks#update'})
+  match('tasks/:id', {:via => :get, :to => 'tasks#edit'})
   match('tasks/:id/destroy', {:via => :get, :to => 'tasks#destroy'})
+  match('tasks/:id/done', {:via => :get, :to => 'tasks#done'})
   match('/', {:via => :get, :to => 'tasks#index'})
 end
+
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
